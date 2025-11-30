@@ -272,7 +272,7 @@ function App() {
         {/* Bottom tagline */}
         <div className="absolute bottom-8 left-0 right-0 text-center">
           <p className="text-gray-500 text-xs uppercase tracking-widest">
-            Challenge School Ride Pool
+            Challenge School Pool to School
           </p>
         </div>
       </div>
