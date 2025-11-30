@@ -1,10 +1,15 @@
-// Detect if we're in production or development
-const isProduction = window.location.hostname !== 'localhost';
+// Detect environment
+const hostname = window.location.hostname;
 
-const productionUrl = 'https://main.d1guamlijcpxs0.amplifyapp.com';
-const developmentUrl = 'http://localhost:5173';
-
-const redirectUrl = isProduction ? productionUrl : developmentUrl;
+let redirectUrl;
+if (hostname === 'localhost') {
+  redirectUrl = 'http://localhost:5173';
+} else if (hostname === 'pooltoschool.org' || hostname === 'www.pooltoschool.org') {
+  redirectUrl = `https://${hostname}`;
+} else {
+  // Fallback to Amplify URL
+  redirectUrl = 'https://main.d1guamlijcpxs0.amplifyapp.com';
+}
 
 export const awsConfig = {
   region: 'us-east-2',
