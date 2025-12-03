@@ -63,9 +63,9 @@ function App() {
       setUser({ ...currentUser, email });
       
       // Check if user is registered and fetch profile data
-      // Using /{userId} route - encode email for URL
+      // Using /users/{userId} route - encode email for URL
       const encodedEmail = encodeURIComponent(email);
-      const response = await fetch(`${awsConfig.apiEndpoint}/${encodedEmail}`);
+      const response = await fetch(`${awsConfig.apiEndpoint}/users/${encodedEmail}`);
       if (response.ok) {
         const data = await response.json();
         setProfileData(data);
@@ -179,7 +179,7 @@ function App() {
     
     try {
       const encodedEmail = encodeURIComponent(user.email);
-      const response = await fetch(`${awsConfig.apiEndpoint}/${encodedEmail}`, {
+      const response = await fetch(`${awsConfig.apiEndpoint}/users/${encodedEmail}`, {
         method: 'DELETE',
       });
 
