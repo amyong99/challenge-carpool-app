@@ -58,21 +58,39 @@ function App() {
     try {
       const currentUser = await getCurrentUser();
       const session = await fetchAuthSession();
-      const email = session.tokens?.idToken?.payload?.email;
       
+      // Try multiple ways to get email
+      let email = session.tokens?.idToken?.payload?.email;
+      
+      if (!email) {
+        // Try getting from userAttributes
+        email = currentUser?.signInDetails?.loginId;
+      }
+      
+      if (!email) {
+        console.log('No email found in session');
+        setLoading(false);
+        return;
+      }
+      
+      console.log('Found email:', email);
       setUser({ ...currentUser, email });
       
       // Check if user is registered and fetch profile data
       // Using /users/{userId} route - encode email for URL
       const encodedEmail = encodeURIComponent(email);
       const response = await fetch(`${awsConfig.apiEndpoint}/users/${encodedEmail}`);
+      
       if (response.ok) {
         const data = await response.json();
         setProfileData(data);
         setIsRegistered(true);
+      } else if (response.status === 404) {
+        // User not found in database - show registration form
+        setIsRegistered(false);
       }
     } catch (error) {
-      console.log('No user signed in');
+      console.log('No user signed in:', error.message);
     } finally {
       setLoading(false);
     }
